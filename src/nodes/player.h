@@ -17,7 +17,7 @@ class RotationalAnimation;
 class MouseMoveable;
 
 class Player : public CharacterBody2D {
-    GDCLASS_EX(Player, CharacterBody2D)
+    GDCLASS_EX(Player, CharacterBody2D);
 
     MDV_GET_SET_T(body_sprite, RotationalAnimation*, nullptr);
     MDV_GET_SET_T(weapon_sprite, RotationalAnimation*, nullptr);
@@ -25,8 +25,8 @@ class Player : public CharacterBody2D {
     MDV_GET_SET_T(collision_shape, CollisionShape2D*, nullptr);
 
    private:
-    Ref<Logger> log_;
-    void update_animation_();
+    Ref<Logger> log_ = {};
+    void update_animation_() const;
 
    public:
     void _ready() override;

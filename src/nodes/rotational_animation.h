@@ -18,18 +18,13 @@ class RotationalAnimation : public AnimatedSprite2D {
         float max;
 
         RotationLimit() : min(0), max(0) {}
-        RotationLimit(float min, float max) : min(min), max(max) {}
+        RotationLimit(const float min, const float max) : min(min), max(max) {}
     };
 
     struct RotationLimits {
-        RotationLimit rhs;
-        RotationLimit lhs_upper;
-        RotationLimit lhs_lower;
-
-        RotationLimits()
-            : rhs(0, 0),
-              lhs_upper(-global::R180, 0),
-              lhs_lower(0, global::R180) {}
+        RotationLimit rhs = {0, 0};
+        RotationLimit lhs_upper = {-global::R180, 0};
+        RotationLimit lhs_lower = {0, global::R180};
     };
 
     GDCLASS_EX(RotationalAnimation, AnimatedSprite2D)
@@ -50,7 +45,7 @@ class RotationalAnimation : public AnimatedSprite2D {
    public:
     void _ready() override;
 
-    inline float get_rotation_boundary() const {
+    [[nodiscard]] inline float get_rotation_boundary() const {
         return Math::rad_to_deg(rotation_boundary_);
     }
     inline void set_rotation_boundary(const float d) {
@@ -58,9 +53,10 @@ class RotationalAnimation : public AnimatedSprite2D {
         update_limits();
     }
 
-    void update_animation(const bool moving, const float angle);
+    void update_animation(const bool moving, const bool attacking,
+                          const float angle);
 
-    void idle(const float angle);
+    void idle();
     // TODO: set animation fps given current velocity
     void walk(const float angle);
     void attack(const float angle);

@@ -22,24 +22,22 @@ class Logger : public RefCounted {
     MDV_GET_SET(level, LogLevel, SILENT);
 #endif
 
-    MDV_GET_SET(prefix, String, "Global");
-
-   public:
-    static Ref<Logger> with_prefix(const String &prefix);
+    MDV_GET_SET_R(prefix, String, "Global");
 
    private:
     static const char *level_names_[4];
-    void log_(const LogLevel level, const String &msg);
+    void log_(const LogLevel level, const String &msg) const;
 
    public:
+    static Ref<Logger> with_prefix(const String &prefix);
     // TODO: add rest of methods
-    void debug(const String &msg);
+    void debug(const String &msg) const;
     template <typename... VarArgs>
-    void debugf(const String &msg, const VarArgs... args);
+    void debugf(const String &msg, const VarArgs... args) const;
 };
 
 template <typename... VarArgs>
-void Logger::debugf(const String &msg, const VarArgs... args) {
+void Logger::debugf(const String &msg, const VarArgs... args) const {
     debug(vformat(msg, args...));
 }
 }  // namespace godot::aquilia

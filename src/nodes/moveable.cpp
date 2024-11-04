@@ -10,21 +10,21 @@ void Moveable::_physics_process(double delta) {
     }
 }
 
-bool Moveable::destination_reached(const Vector2 position) const {
+bool Moveable::destination_reached(const Vector2 &position) const {
     if (!moving_) return true;
     return distance_to_target(position) <= target_threshold_;
 }
 
-int Moveable::distance_to_target(const Vector2 position) const {
+int Moveable::distance_to_target(const Vector2 &position) const {
     return static_cast<int>((position - destination_).length_squared());
 }
 
-float Moveable::angle_to_target(const Vector2 position) const {
+float Moveable::angle_to_target(const Vector2 &position) const {
     return position.angle_to_point(destination_);
 }
 
-Vector2 Moveable::velocity(float delta) const {
-    if (!moving_) return Vector2(0, 0);
+Vector2 Moveable::velocity(const float delta) const {
+    if (!moving_) return {0, 0};
     return direction_ * base_speed_ * delta;
 }
 
@@ -48,8 +48,8 @@ void Moveable::_bind_methods() {
     ClassDB::bind_method(D_METHOD("velocity", "delta"), &Moveable::velocity);
 }
 
-Moveable::Moveable() {}
+Moveable::Moveable() = default;
 
-Moveable::~Moveable() {}
+Moveable::~Moveable() = default;
 }  // namespace godot::aquilia
 

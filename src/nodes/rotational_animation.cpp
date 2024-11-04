@@ -21,7 +21,7 @@ void RotationalAnimation::_ready() {
 }
 
 RotationalAnimation::RotationLimit RotationalAnimation::flip_rotation(
-    float angle) {
+    const float angle) {
     if (angle > global::R90 || angle < -global::R90) {
         set_flip_v(true);
         if (angle < 0) return limits_.lhs_upper;
@@ -52,20 +52,23 @@ void RotationalAnimation::initialize_sprite_frames_() {
 float RotationalAnimation::play_animation_(const StringName &name,
                                            const float angle) {
     play(name);
-    RotationLimit bounds{flip_rotation(angle)};
+    const RotationLimit bounds{flip_rotation(angle)};
     return Math::clamp(angle, bounds.min, bounds.max);
 }
 
 void RotationalAnimation::update_animation(const bool moving,
+                                           const bool attacking,
                                            const float angle) {
-    if (moving) {
+    if (attacking) {
+        attack(angle);
+    } else if (moving) {
         walk(angle);
     } else {
-        idle(angle);
+        idle();
     }
 }
 
-void RotationalAnimation::idle(const float angle) {
+void RotationalAnimation::idle() {
     play(IDLE);
     set_rotation(is_flipped_v() ? global::R180 : 0.f);
 }
@@ -81,7 +84,7 @@ void RotationalAnimation::attack(const float angle) {
 void RotationalAnimation::_bind_methods() {
     MPV_BIND(rotation_boundary, RotationalAnimation, Variant::FLOAT);
 
-    ClassDB::bind_method(D_METHOD("idle", "angle"), &RotationalAnimation::idle);
+    ClassDB::bind_method(D_METHOD("idle"), &RotationalAnimation::idle);
     ClassDB::bind_method(D_METHOD("walk", "angle"), &RotationalAnimation::walk);
     ClassDB::bind_method(D_METHOD("attack", "angle"),
                          &RotationalAnimation::attack);
@@ -89,7 +92,7 @@ void RotationalAnimation::_bind_methods() {
                          &RotationalAnimation::update_animation);
 }
 
-RotationalAnimation::RotationalAnimation() {}
-RotationalAnimation::~RotationalAnimation() {}
+RotationalAnimation::RotationalAnimation() = default;
+RotationalAnimation::~RotationalAnimation() = default;
 }  // namespace godot::aquilia
 

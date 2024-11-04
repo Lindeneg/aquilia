@@ -14,8 +14,9 @@ class MouseMoveable : public Moveable {
     // minimum range for mouse click to cause movement
     MDV_GET_SET(min_move_threshold, int, 10000);
     // input action to move player
-    MDV_GET_SET(move_action, StringName, "move-action");
+    MDV_GET_SET_R(move_action, StringName, "move-action");
 
+   private:
     void input_();
 
    public:

@@ -2,8 +2,6 @@
 
 #include <godot_cpp/classes/animated_sprite2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
-#include <godot_cpp/classes/rectangle_shape2d.hpp>
-#include <godot_cpp/classes/sprite_frames.hpp>
 
 #include "../core/utils.h"
 #include "../nodes/mouse-moveable.h"
@@ -16,21 +14,20 @@ void Player::_ready() {
     REQUIRED_CHILD(weapon_sprite_, "Weapon", RotationalAnimation);
     REQUIRED_CHILD(moveable_, "MouseMoveable", MouseMoveable);
     REQUIRED_CHILD(collision_shape_, "CollisionShape", CollisionShape2D);
-
-    log_->debug("Player is ready!");
 }
 
-void Player::_physics_process(double delta) {
+void Player::_physics_process(const double delta) {
     if (utils::is_in_editor()) return;
-    move_and_collide(moveable_->velocity(delta));
+    move_and_collide(moveable_->velocity(static_cast<float>(delta)));
     update_animation_();
 }
 
-void Player::update_animation_() {
-    float angle{moveable_->angle_to_target(get_global_position())};
-    bool moving{moveable_->get_moving()};
-    body_sprite_->update_animation(moving, angle);
-    weapon_sprite_->update_animation(moving, angle);
+void Player::update_animation_() const {
+    const float angle{moveable_->angle_to_target(get_global_position())};
+    const bool moving{moveable_->get_moving()};
+    const bool is_shift_pressed{utils::input_pressed("shift")};
+    body_sprite_->update_animation(moving && !is_shift_pressed, false, angle);
+    weapon_sprite_->update_animation(moving || is_shift_pressed, false, angle);
 }
 
 void Player::_bind_methods() {
@@ -40,7 +37,7 @@ void Player::_bind_methods() {
     MPN_BIND(weapon_sprite, Player, RotationalAnimation);
 }
 
-Player::Player() {}
+Player::Player() = default;
 Player::~Player() {
     utils::queue_delete(body_sprite_);
     utils::queue_delete(weapon_sprite_);

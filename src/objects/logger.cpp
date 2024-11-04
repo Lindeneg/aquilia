@@ -13,11 +13,11 @@ Ref<Logger> Logger::with_prefix(const String &prefix) {
     return l;
 }
 
-void Logger::debug(const String &msg) { log_(DEBUG, msg); }
+void Logger::debug(const String &msg) const { log_(DEBUG, msg); }
 
-void Logger::log_(const LogLevel level, const String &msg) {
+void Logger::log_(const LogLevel level, const String &msg) const {
     if (level <= SILENT || level_ < level) return;
-    String formatted =
+    const String formatted =
         vformat("[%s] [%s] [%s]: %s", level_names_[level - 1], prefix_,
                 Time::get_singleton()->get_datetime_string_from_system(), msg);
     UtilityFunctions::print(formatted);
@@ -42,8 +42,8 @@ void Logger::_bind_methods() {
     BIND_ENUM_CONSTANT(FATAL);
 }
 
-Logger::Logger() {}
-Logger::~Logger() {}
+Logger::Logger() = default;
+Logger::~Logger() = default;
 
 }  // namespace godot::aquilia
 
