@@ -6,12 +6,12 @@ namespace godot::aquilia {
 
 void MouseMoveable::_process(double) {
     if (utils::is_in_editor()) return;
-    if (utils::input_pressed(move_action_)) input_();
     if (utils::input_down(halt_action_)) {
         halting_ = true;
     } else if (utils::input_up(halt_action_)) {
         halting_ = false;
     }
+    if (utils::input_pressed(move_action_)) input_();
 }
 
 void MouseMoveable::input_() {
