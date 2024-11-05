@@ -5,6 +5,7 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+#include "../nodes/attacker.h"
 #include "../nodes/mouse-moveable.h"
 #include "../nodes/moveable.h"
 #include "../nodes/player.h"
@@ -19,6 +20,7 @@ void initialize_aquilia_extension_module(ModuleInitializationLevel p_level) {
     }
 
     ClassDB::register_class<aquilia::Logger>();
+    ClassDB::register_class<aquilia::Attacker>();
     ClassDB::register_class<aquilia::Moveable>();
     ClassDB::register_class<aquilia::MouseMoveable>();
     ClassDB::register_class<aquilia::RotationalAnimation>();

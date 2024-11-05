@@ -22,11 +22,19 @@ void MouseMoveable::input_() {
     set_moving(distance_to_target(pos) > min_move_threshold_ && !halting_);
 }
 
+Vector2 MouseMoveable::velocity(const float delta) const {
+    if (halting_) return {0, 0};
+    return velocity_(delta);
+}
+
 void MouseMoveable::_bind_methods() {
     MPV_BIND(min_move_threshold, MouseMoveable, Variant::INT);
     MPV_BIND(move_action, MouseMoveable, Variant::STRING_NAME);
     MPV_BIND(halt_action, MouseMoveable, Variant::STRING_NAME);
     M_BIND(halting, MouseMoveable);
+
+    ClassDB::bind_method(D_METHOD("velocity", "delta"),
+                         &MouseMoveable::velocity);
 }
 
 MouseMoveable::MouseMoveable() = default;

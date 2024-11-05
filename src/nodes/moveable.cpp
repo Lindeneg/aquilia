@@ -23,7 +23,7 @@ float Moveable::angle_to_target(const Vector2 &position) const {
     return position.angle_to_point(destination_);
 }
 
-Vector2 Moveable::velocity(const float delta) const {
+Vector2 Moveable::velocity_(const float delta) const {
     if (!moving_) return {0, 0};
     return direction_ * base_speed_ * delta;
 }
@@ -44,8 +44,6 @@ void Moveable::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("angle_to_target", "position"),
                          &Moveable::angle_to_target);
-
-    ClassDB::bind_method(D_METHOD("velocity", "delta"), &Moveable::velocity);
 }
 
 Moveable::Moveable() = default;

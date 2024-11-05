@@ -15,6 +15,7 @@ namespace godot::aquilia {
 class Moveable;
 class RotationalAnimation;
 class MouseMoveable;
+class Attacker;
 
 class Player : public CharacterBody2D {
     GDCLASS_EX(Player, CharacterBody2D);
@@ -22,6 +23,7 @@ class Player : public CharacterBody2D {
     MDV_GET_SET_T(body_sprite, RotationalAnimation*, nullptr);
     MDV_GET_SET_T(weapon_sprite, RotationalAnimation*, nullptr);
     MDV_GET_SET_T(moveable, MouseMoveable*, nullptr);
+    MDV_GET_SET_T(attacker, Attacker*, nullptr);
     MDV_GET_SET_T(collision_shape, CollisionShape2D*, nullptr);
 
    private:

@@ -168,7 +168,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4secx")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
 "speed": 5.0
 }, {
@@ -209,6 +209,9 @@ animation = &"idle"
 min_move_threshold = 500
 move_action = &"left-click"
 halt_action = &"shift"
+
+[node name="Attacker" type="Attacker" parent="."]
+attack_action = &"attack"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_24l0l")

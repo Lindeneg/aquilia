@@ -24,6 +24,7 @@ class MouseMoveable : public Moveable {
 
    public:
     void _process(double) override;
+    [[nodiscard]] Vector2 velocity(const float delta) const;
 };
 }  // namespace godot::aquilia
 

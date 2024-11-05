@@ -16,13 +16,15 @@ class Moveable : public Node2D {
     MDV_GET_SET(destination, Vector2, Vector2());
     MDV_GET_SET(direction, Vector2, Vector2());
 
+   protected:
+    Vector2 velocity_(const float delta) const;
+
    public:
     void _physics_process(double delta) override;
 
     [[nodiscard]] bool destination_reached(const Vector2 &position) const;
     [[nodiscard]] int distance_to_target(const Vector2 &position) const;
     [[nodiscard]] float angle_to_target(const Vector2 &position) const;
-    Vector2 velocity(const float delta) const;
 };
 }  // namespace godot::aquilia
 

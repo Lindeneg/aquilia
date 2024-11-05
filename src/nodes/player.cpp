@@ -4,6 +4,7 @@
 #include <godot_cpp/classes/collision_shape2d.hpp>
 
 #include "../core/utils.h"
+#include "../nodes/attacker.h"
 #include "../nodes/mouse-moveable.h"
 #include "../nodes/rotational_animation.h"
 
@@ -13,12 +14,13 @@ void Player::_ready() {
     REQUIRED_CHILD(body_sprite_, "Body", RotationalAnimation);
     REQUIRED_CHILD(weapon_sprite_, "Weapon", RotationalAnimation);
     REQUIRED_CHILD(moveable_, "MouseMoveable", MouseMoveable);
+    REQUIRED_CHILD(attacker_, "Attacker", Attacker);
     REQUIRED_CHILD(collision_shape_, "CollisionShape", CollisionShape2D);
 }
 
 void Player::_physics_process(const double delta) {
     if (utils::is_in_editor()) return;
-    move_and_collide(moveable_->velocity(static_cast<float>(delta)));
+    move_and_collide(moveable_->velocity(delta));
     update_animation_();
 }
 
@@ -26,6 +28,7 @@ void Player::update_animation_() const {
     const float angle{moveable_->angle_to_target(get_global_position())};
     const bool moving{moveable_->get_moving()};
     const bool halting{moveable_->get_halting()};
+    const bool attacking{attacker_->get_attacking()};
 
     if (moving && !halting) {
         body_sprite_->walk(angle);
@@ -33,7 +36,9 @@ void Player::update_animation_() const {
         body_sprite_->idle_fixed();
     }
 
-    if (moving || halting) {
+    if (attacking) {
+        weapon_sprite_->attack(angle);
+    } else if (moving || halting) {
         weapon_sprite_->idle_free(angle);
     } else {
         weapon_sprite_->idle_fixed();
