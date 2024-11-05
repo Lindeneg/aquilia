@@ -51,7 +51,7 @@
 
 // getter
 #define M_GET(name, type) \
-    inline type get_##name() const { return name##_; }
+    [[nodiscard]] inline type get_##name() const { return name##_; }
 
 // const setter
 #define M_SET(name, type) \
