@@ -11,6 +11,7 @@ class Dictionary;
 }  // namespace godot
 
 namespace godot::aquilia {
+class Moveable;
 
 class RotationalAnimation : public AnimatedSprite2D {
     struct RotationLimit {
@@ -53,10 +54,8 @@ class RotationalAnimation : public AnimatedSprite2D {
         update_limits();
     }
 
-    void update_animation(const bool moving, const bool attacking,
-                          const float angle);
-
-    void idle();
+    void idle_fixed();
+    void idle_free(const float angle);
     // TODO: set animation fps given current velocity
     void walk(const float angle);
     void attack(const float angle);

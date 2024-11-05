@@ -208,6 +208,7 @@ animation = &"idle"
 [node name="MouseMoveable" type="MouseMoveable" parent="."]
 min_move_threshold = 500
 move_action = &"left-click"
+halt_action = &"shift"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_24l0l")

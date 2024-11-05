@@ -25,9 +25,19 @@ void Player::_physics_process(const double delta) {
 void Player::update_animation_() const {
     const float angle{moveable_->angle_to_target(get_global_position())};
     const bool moving{moveable_->get_moving()};
-    const bool is_shift_pressed{utils::input_pressed("shift")};
-    body_sprite_->update_animation(moving && !is_shift_pressed, false, angle);
-    weapon_sprite_->update_animation(moving || is_shift_pressed, false, angle);
+    const bool halting{moveable_->get_halting()};
+
+    if (moving && !halting) {
+        body_sprite_->walk(angle);
+    } else {
+        body_sprite_->idle_fixed();
+    }
+
+    if (moving || halting) {
+        weapon_sprite_->idle_free(angle);
+    } else {
+        weapon_sprite_->idle_fixed();
+    }
 }
 
 void Player::_bind_methods() {

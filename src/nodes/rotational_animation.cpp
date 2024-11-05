@@ -56,21 +56,13 @@ float RotationalAnimation::play_animation_(const StringName &name,
     return Math::clamp(angle, bounds.min, bounds.max);
 }
 
-void RotationalAnimation::update_animation(const bool moving,
-                                           const bool attacking,
-                                           const float angle) {
-    if (attacking) {
-        attack(angle);
-    } else if (moving) {
-        walk(angle);
-    } else {
-        idle();
-    }
-}
-
-void RotationalAnimation::idle() {
+void RotationalAnimation::idle_fixed() {
     play(IDLE);
     set_rotation(is_flipped_v() ? global::R180 : 0.f);
+}
+
+void RotationalAnimation::idle_free(const float angle) {
+    set_rotation(play_animation_(IDLE, angle));
 }
 
 void RotationalAnimation::walk(const float angle) {
@@ -84,12 +76,13 @@ void RotationalAnimation::attack(const float angle) {
 void RotationalAnimation::_bind_methods() {
     MPV_BIND(rotation_boundary, RotationalAnimation, Variant::FLOAT);
 
-    ClassDB::bind_method(D_METHOD("idle"), &RotationalAnimation::idle);
+    ClassDB::bind_method(D_METHOD("idle_fixed"),
+                         &RotationalAnimation::idle_fixed);
+    ClassDB::bind_method(D_METHOD("idle_free"),
+                         &RotationalAnimation::idle_free);
     ClassDB::bind_method(D_METHOD("walk", "angle"), &RotationalAnimation::walk);
     ClassDB::bind_method(D_METHOD("attack", "angle"),
                          &RotationalAnimation::attack);
-    ClassDB::bind_method(D_METHOD("update_animation", "moving", "angle"),
-                         &RotationalAnimation::update_animation);
 }
 
 RotationalAnimation::RotationalAnimation() = default;

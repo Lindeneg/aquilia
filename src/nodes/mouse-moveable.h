@@ -15,6 +15,9 @@ class MouseMoveable : public Moveable {
     MDV_GET_SET(min_move_threshold, int, 10000);
     // input action to move player
     MDV_GET_SET_R(move_action, StringName, "move-action");
+    // input action to halt player (but still be able to rotate)
+    MDV_GET_SET_R(halt_action, StringName, "halt-action");
+    MDV_GET_SET(halting, bool, false);
 
    private:
     void input_();
